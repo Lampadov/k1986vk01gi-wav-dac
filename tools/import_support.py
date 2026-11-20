@@ -22,6 +22,8 @@ def support_paths():
 def import_support(archive_path):
     # Only copy files named in the Keil project, plus the original audio if used.
     with ZipFile(archive_path) as archive:
+        if PROJECT not in archive.namelist():
+            raise ValueError(f"Use the original archive containing {PROJECT}.")
         paths = support_paths()
         missing = {path.as_posix() for path in paths}.difference(archive.namelist())
         if missing:
